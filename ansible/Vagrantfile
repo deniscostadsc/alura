@@ -4,6 +4,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "wordpress" do |wordpress|
     wordpress.vm.network "private_network", ip: "10.0.0.3"
     wordpress.vm.provision "shell",
+      inline: "apt-get update && apt-get install -y python"
+    wordpress.vm.provision "shell",
       inline: "cat /vagrant/configs/id_ed25519.pub >> /home/vagrant/.ssh/authorized_keys"
   end
 
