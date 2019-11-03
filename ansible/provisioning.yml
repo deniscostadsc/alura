@@ -7,6 +7,15 @@
           - apache2
           - libapache2-mod-php5.6
           - php5.6
+          - python-mysqldb
+          - mysql-server-5.7
         state: latest
         update_cache: true
       become: yes
+
+    - name: Create database
+      mysql_db:
+        name: wordpress_db
+        login_user: root
+        state: present
+      become: true
