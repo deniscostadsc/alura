@@ -46,6 +46,7 @@
         src: /var/www/wordpress/wp-config-sample.php
         dest: /var/www/wordpress/wp-config.php
         remote_src: yes
+        force: no
       become: true
 
     - name: Change Wordpress config values
