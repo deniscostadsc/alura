@@ -5,6 +5,7 @@ check:
 
 clean:
 	vagrant destroy -f
+	rm provisioning.retry *.log
 
 up:
 	vagrant up
