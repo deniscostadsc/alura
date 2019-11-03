@@ -6,7 +6,7 @@ check:
 	vagrant validate
 
 clean:
-	rm provisioning.retry *.log
+	rm *.retry *.log
 
 destroy:
 	vagrant destroy -f
