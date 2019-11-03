@@ -1,16 +1,22 @@
-.PHONY: check clean up provision
+.PHONY: build check clean destroy provision up update
+
+build: update up provision
 
 check:
 	vagrant validate
 
 clean:
-	vagrant destroy -f
 	rm provisioning.retry *.log
 
-up:
-	vagrant box update
-	vagrant up
+destroy:
+	vagrant destroy -f
 
 provision:
 	vagrant ssh ansible \
 		-c 'ansible-playbook /vagrant/provisioning.yml -i /vagrant/hosts'
+
+up:
+	vagrant up
+
+update:
+	vagrant box update
