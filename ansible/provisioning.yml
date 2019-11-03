@@ -15,7 +15,7 @@
 
     - name: Create database
       mysql_db:
-        name: wordpress_db
+        name: wordpress
         login_user: root
         state: present
       become: true
