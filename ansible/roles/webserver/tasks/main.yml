@@ -1,0 +1,21 @@
+---
+- name: Install wordpress dependencies
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+      - libmcrypt-dev
+      - php-ssh2
+      - php7.2
+      - php7.2-dev
+      - php7.2-gd
+      - php7.2-mysql
+    state: latest
+    update_cache: true
+  become: yes
+
+- name: Install mcrypt wrapper for PHP
+  pear:
+    name: pecl/mcrypt
+    state: present
+  become: true

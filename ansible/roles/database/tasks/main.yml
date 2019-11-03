@@ -1,0 +1,38 @@
+---
+- name: Install database dependencies
+  apt:
+    name:
+      - mysql-server-5.7
+      - python-mysqldb
+    state: latest
+    update_cache: true
+  become: yes
+
+- name: Create database
+  mysql_db:
+    name: "{{ database_name }}"
+    login_user: root
+    state: present
+  become: true
+
+- name: Create database user
+  mysql_user:
+    name: "{{ database_user }}"
+    login_user: root
+    password: 12345
+    priv: "{{ database_name }}.*:ALL"
+    host: "{{ item }}"
+    state: present
+  become: true
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - "{{ wordpress_host }}"
+
+- name: Copy MySQL config file
+  copy:
+    src: files/mysqld.cnf
+    dest: /etc/mysql/mysql.conf.d/
+  become: true
+  notify:
+    - restart mysql
