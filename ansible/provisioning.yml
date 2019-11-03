@@ -40,3 +40,10 @@
         dest: /var/www/
         remote_src: yes
       become: true
+
+    - name: Copy Wordpress config sample
+      copy:
+        src: /var/www/wordpress/wp-config-sample.php
+        dest: /var/www/wordpress/wp-config.php
+        remote_src: yes
+      become: true
