@@ -19,3 +19,12 @@
         login_user: root
         state: present
       become: true
+
+    - name: Create database user
+      mysql_user:
+        name: wordpress
+        login_user: root
+        password: 12345
+        priv: wordpress.*:ALL
+        state: present
+      become: true
