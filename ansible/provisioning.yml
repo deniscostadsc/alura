@@ -3,11 +3,10 @@
   tasks:
     - name: Install dependencies
       apt:
-        name: '{{ item }}'
+        name:
+          - apache2
+          - libapache2-mod-php5.6
+          - php5.6
         state: latest
         update_cache: true
       become: yes
-      with_items:
-        - apache2
-        - libapache2-mod-php5.6
-        - php5.6
