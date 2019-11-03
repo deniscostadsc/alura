@@ -1,4 +1,25 @@
 ---
 - hosts: all
   tasks:
-    - shell: 'echo hello > /vagrant/world.txt'
+    - name: 'Install Apache2'
+      apt:
+        name: apache2
+        state: latest
+        update_cache: true
+      become: yes
+    - name: 'Add PHP PPA'
+      apt_repository:
+        repo: ppa:ondrej/php
+      become: yes
+    - name: 'Install PHP'
+      apt:
+        name: php5.6
+        state: latest
+        update_cache: true
+      become: yes
+    - name: 'Install modphp'
+      apt:
+        name: libapache2-mod-php5.6
+        state: latest
+        update_cache: true
+      become: yes
