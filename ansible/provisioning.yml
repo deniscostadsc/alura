@@ -59,3 +59,9 @@
         - { regexp: database_name_here, value: wordpress }
         - { regexp: username_here, value: wordpress }
         - { regexp: password_here, value: 12345 }
+
+    - name: Copy Apache2 config file
+      copy:
+        src: files/000-default.conf
+        dest: /etc/apache2/sites-available/
+      become: true
