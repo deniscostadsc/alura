@@ -13,4 +13,4 @@ up:
 
 provision:
 	vagrant ssh ansible \
-		-c 'ansible-playbook /vagrant/provisioning.yml -i /vagrant/hosts --private-key ~/.ssh/id_ed25519'
+		-c 'ansible-playbook /vagrant/provisioning.yml -i /vagrant/hosts'
