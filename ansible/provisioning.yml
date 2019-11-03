@@ -19,24 +19,24 @@
 
     - name: Create database
       mysql_db:
-        name: wordpress
+        name: "{{ database_name }}"
         login_user: root
         state: present
       become: true
 
     - name: Create database user
       mysql_user:
-        name: wordpress
+        name: "{{ database_user }}"
         login_user: root
         password: 12345
-        priv: wordpress.*:ALL
+        priv: "{{ database_name }}.*:ALL"
         host: "{{ item }}"
         state: present
       become: true
       with_items:
         - localhost
         - 127.0.0.1
-        - 10.0.0.3
+        - "{{ wordpress_host }}"
 
     - name: Copy MySQL config file
       copy:
@@ -90,23 +90,23 @@
 
     - name: Copy Wordpress config sample
       copy:
-        src: /var/www/wordpress/wp-config-sample.php
-        dest: /var/www/wordpress/wp-config.php
+        src: "{{ wordpress_installation_dir }}/wp-config-sample.php"
+        dest: "{{ wordpress_installation_dir }}/wp-config.php"
         remote_src: yes
         force: no
       become: true
 
     - name: Change Wordpress config values
       replace:
-        path: /var/www/wordpress/wp-config.php
+        path: "{{ wordpress_installation_dir }}/wp-config.php"
         regexp: "{{ item.regexp }}"
         replace: "{{ item.value }}"
       become: true
       with_items:
-        - { regexp: database_name_here, value: wordpress }
-        - { regexp: username_here, value: wordpress }
-        - { regexp: password_here, value: 12345 }
-        - { regexp: localhost, value: 10.0.0.4 }
+        - { regexp: database_name_here, value: "{{ database_name }}" }
+        - { regexp: username_here, value: "{{ database_user }}" }
+        - { regexp: password_here, value: "{{ database_password }}" }
+        - { regexp: localhost, value: "{{ database_host }}" }
 
     - name: Copy Apache2 config file
       template:

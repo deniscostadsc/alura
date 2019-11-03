@@ -1,0 +1,3 @@
+database_name: wordpress
+database_password: 12345
+database_user: wordpress
