@@ -47,3 +47,14 @@
         dest: /var/www/wordpress/wp-config.php
         remote_src: yes
       become: true
+
+    - name: Change Wordpress config values
+      replace:
+        path: /var/www/wordpress/wp-config.php
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.value }}"
+      become: true
+      with_items:
+        - { regexp: database_name_here, value: wordpress }
+        - { regexp: username_here, value: wordpress }
+        - { regexp: password_here, value: 12345 }
