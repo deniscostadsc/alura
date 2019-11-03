@@ -109,9 +109,9 @@
         - { regexp: localhost, value: 10.0.0.4 }
 
     - name: Copy Apache2 config file
-      copy:
-        src: files/000-default.conf
-        dest: /etc/apache2/sites-available/
+      template:
+        src: templates/000-default.conf.j2
+        dest: /etc/apache2/sites-available/000-default.conf
       become: true
       notify:
         - restart apache2
