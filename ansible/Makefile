@@ -8,6 +8,7 @@ clean:
 	rm provisioning.retry *.log
 
 up:
+	vagrant box update
 	vagrant up
 
 provision:
