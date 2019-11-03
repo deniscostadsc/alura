@@ -88,25 +88,11 @@
         remote_src: yes
       become: true
 
-    - name: Copy Wordpress config sample
-      copy:
-        src: "{{ wordpress_installation_dir }}/wp-config-sample.php"
+    - name: Copy Wordpress config values
+      template:
+        src: templates/wp-config.php.j2
         dest: "{{ wordpress_installation_dir }}/wp-config.php"
-        remote_src: yes
-        force: no
       become: true
-
-    - name: Change Wordpress config values
-      replace:
-        path: "{{ wordpress_installation_dir }}/wp-config.php"
-        regexp: "{{ item.regexp }}"
-        replace: "{{ item.value }}"
-      become: true
-      with_items:
-        - { regexp: database_name_here, value: "{{ database_name }}" }
-        - { regexp: username_here, value: "{{ database_user }}" }
-        - { regexp: password_here, value: "{{ database_password }}" }
-        - { regexp: localhost, value: "{{ database_host }}" }
 
     - name: Copy Apache2 config file
       template:
