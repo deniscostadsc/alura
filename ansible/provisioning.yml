@@ -1,21 +1,18 @@
 ---
-- hosts: all
+- hosts: database
   handlers:
-    - name: restart apache2
+    - name: restart mysql
       service:
-        name: apache2
+        name: mysql
         state: restarted
       become: yes
 
   tasks:
-    - name: Install dependencies
+    - name: Install database dependencies
       apt:
         name:
-          - apache2
-          - libapache2-mod-php5.6
-          - php5.6
-          - python-mysqldb
           - mysql-server-5.7
+          - python-mysqldb
         state: latest
         update_cache: true
       become: yes
@@ -33,6 +30,49 @@
         login_user: root
         password: 12345
         priv: wordpress.*:ALL
+        host: "{{ item }}"
+        state: present
+      become: true
+      with_items:
+        - localhost
+        - 127.0.0.1
+        - 10.0.0.3
+
+    - name: Copy MySQL config file
+      copy:
+        src: files/mysqld.cnf
+        dest: /etc/mysql/mysql.conf.d/
+      become: true
+      notify:
+        - restart mysql
+
+- hosts: wordpress
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+      become: yes
+
+  tasks:
+    - name: Install wordpress dependencies
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+          - libmcrypt-dev
+          - php-ssh2
+          - php7.2
+          - php7.2-dev
+          - php7.2-gd
+          - php7.2-mysql
+        state: latest
+        update_cache: true
+      become: yes
+
+    - name: Install mcrypt wrapper for PHP
+      pear:
+        name: pecl/mcrypt
         state: present
       become: true
 
@@ -66,6 +106,7 @@
         - { regexp: database_name_here, value: wordpress }
         - { regexp: username_here, value: wordpress }
         - { regexp: password_here, value: 12345 }
+        - { regexp: localhost, value: 10.0.0.4 }
 
     - name: Copy Apache2 config file
       copy:
