@@ -1,1 +1,4 @@
-# Alura study
+# Alura studies
+
+- [Ansible](ansible/)
+- [Vagrant](vagrant/)
